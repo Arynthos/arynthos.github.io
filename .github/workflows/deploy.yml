@@ -1,0 +1,49 @@
+name: Deploy Portfolio to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main        # Triggers on every push to main
+  workflow_dispatch: # Allows manual trigger from the Actions tab
+
+# Sets permissions so the action can write to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Prevent overlapping deployments
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # 1. Check out your repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configure GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 3. Upload your site files as a Pages artifact
+      #    If your index.html is in the repo root, path: "." is correct.
+      #    Change to path: "./src" or "./dist" if your file lives in a subfolder.
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      # 4. Deploy the uploaded artifact to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
