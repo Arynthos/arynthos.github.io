@@ -1020,12 +1020,15 @@
       menu.classList.toggle('open');
     }
 
+    let currentPrankCount = 0;
+
     async function loadPrankCount() {
       try {
-        const res = await fetch('https://api.counterapi.dev/v1/arynthos-portfolio/prank_button');
+        const res = await fetch('https://api.counterapi.dev/v1/arynthos-portfolio/prank_button/');
         const data = await res.json();
         if (data && typeof data.count === 'number') {
-          updatePrankCountUI(data.count);
+          currentPrankCount = data.count;
+          updatePrankCountUI(currentPrankCount);
         }
       } catch (err) { }
     }
@@ -1054,11 +1057,15 @@
         video.play().catch(() => { });
       }
 
+      currentPrankCount++;
+      updatePrankCountUI(currentPrankCount);
+
       try {
-        const res = await fetch('https://api.counterapi.dev/v1/arynthos-portfolio/prank_button/up');
+        const res = await fetch('https://api.counterapi.dev/v1/arynthos-portfolio/prank_button/up/');
         const data = await res.json();
         if (data && typeof data.count === 'number') {
-          updatePrankCountUI(data.count);
+          currentPrankCount = data.count;
+          updatePrankCountUI(currentPrankCount);
         }
       } catch (err) { }
     }
