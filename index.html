@@ -555,14 +555,10 @@
         </div>
 
         <div style="padding: 1.25rem 1.5rem; background: #111827;">
-          <p style="color: #e2e8f0; font-size: 1rem; line-height: 1.6; font-family: 'DM Sans', sans-serif; margin: 0 0 0.75rem 0;">
+          <p style="color: #e2e8f0; font-size: 1rem; line-height: 1.6; font-family: 'DM Sans', sans-serif; margin: 0;">
             Sorry! I also like jokes and pranks ❤️, if you're working with someone, why not a fun person (everybody can
             learn anything)
           </p>
-          <div style="font-size: 0.8rem; color: #94a3b8; font-family: 'DM Sans', sans-serif; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
-            <span>🔥 Curiosity Counter:</span>
-            <span style="font-weight: 700; color: #f87171;">Pressed <span id="prank-counter-display">...</span> times globally!</span>
-          </div>
         </div>
       </div>
     </div>
@@ -1020,25 +1016,7 @@
       menu.classList.toggle('open');
     }
 
-    let currentPrankCount = 0;
-
-    async function loadPrankCount() {
-      try {
-        const res = await fetch('https://api.counterapi.dev/v1/arynthos-portfolio/prank_button/');
-        const data = await res.json();
-        if (data && typeof data.count === 'number') {
-          currentPrankCount = data.count;
-          updatePrankCountUI(currentPrankCount);
-        }
-      } catch (err) { }
-    }
-
-    function updatePrankCountUI(count) {
-      const display = document.getElementById('prank-counter-display');
-      if (display) display.textContent = count;
-    }
-
-    async function handlePrankBtn(e) {
+    function handlePrankBtn(e) {
       e.preventDefault();
       const modal = document.getElementById('video-modal');
       const card = document.getElementById('video-modal-card');
@@ -1056,21 +1034,7 @@
         video.currentTime = 0;
         video.play().catch(() => { });
       }
-
-      currentPrankCount++;
-      updatePrankCountUI(currentPrankCount);
-
-      try {
-        const res = await fetch('https://api.counterapi.dev/v1/arynthos-portfolio/prank_button/up/');
-        const data = await res.json();
-        if (data && typeof data.count === 'number') {
-          currentPrankCount = data.count;
-          updatePrankCountUI(currentPrankCount);
-        }
-      } catch (err) { }
     }
-
-    document.addEventListener('DOMContentLoaded', loadPrankCount);
 
     function closeVideoModal() {
       const modal = document.getElementById('video-modal');
